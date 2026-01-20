@@ -1,7 +1,17 @@
-import React, { useState, useMemo } from 'react';
-import { Search, TrendingUp, Building2, Briefcase, Ghost, Sparkles, Users, ArrowRight } from 'lucide-react';
+import React, { useState, useMemo } from "react";
+import {
+  Search,
+  TrendingUp,
+  Building2,
+  Briefcase,
+  Ghost,
+  Users,
+  ArrowRight,
+} from "lucide-react";
 
-// Sample data - you'll populate this with real research
+/* -----------------------------
+   Sample data (replace later)
+------------------------------ */
 const sampleFounders = [
   {
     id: 1,
@@ -16,8 +26,8 @@ const sampleFounders = [
     newFunding: "$25M Series A",
     timeToRecover: "8 months",
     outcome: "Active - Growing",
-    linkedin: "#",
-    story: "Pivoted the ghost kitchen logistics into AI-powered delivery routing. Investors from failed venture backed the new one."
+    story:
+      "Pivoted ghost kitchen logistics into AI-powered delivery routing. Investors from the failed startup backed the new venture.",
   },
   {
     id: 2,
@@ -31,8 +41,8 @@ const sampleFounders = [
     currentCompany: "Blockchain Capital",
     timeToRecover: "14 months",
     outcome: "Thriving",
-    linkedin: "#",
-    story: "Used her hard-earned crypto wisdom to help others avoid the same mistakes. Now writes checks instead of cashing them."
+    story:
+      "Used hard-earned crypto lessons to help others avoid the same mistakes. Now writes checks instead of cashing them.",
   },
   {
     id: 3,
@@ -46,8 +56,8 @@ const sampleFounders = [
     currentCompany: "Amazon Health",
     timeToRecover: "6 months",
     outcome: "Stable",
-    linkedin: "#",
-    story: "Took the 'safe' exit. Building telehealth features at scale, minus the fundraising stress and board meetings."
+    story:
+      "Took the safe exit. Now building telehealth products at scale without fundraising stress.",
   },
   {
     id: 4,
@@ -61,8 +71,8 @@ const sampleFounders = [
     currentCompany: "Independent",
     timeToRecover: "4 months",
     outcome: "Active Portfolio",
-    linkedin: "#",
-    story: "Advising 12 startups and angel investing. Turns out failure is the best credential for helping others succeed."
+    story:
+      "Advises 12 startups and angel invests. Failure became her strongest credential.",
   },
   {
     id: 5,
@@ -76,8 +86,8 @@ const sampleFounders = [
     currentCompany: "Off Grid",
     timeToRecover: "N/A",
     outcome: "MIA",
-    linkedin: "#",
-    story: "Last LinkedIn update: 2019. Rumored to be sailing around the world or starting a vineyard. The mystery endures."
+    story:
+      "Last LinkedIn update: 2019. Rumored to be sailing the world or starting a vineyard.",
   },
   {
     id: 6,
@@ -92,229 +102,203 @@ const sampleFounders = [
     newFunding: "$60M Series B",
     timeToRecover: "11 months",
     outcome: "Unicorn Track",
-    linkedin: "#",
-    story: "Learned from regulatory nightmares at PayFlow. ClearPay addresses the same market with compliance-first approach."
-  }
+    story:
+      "Rebuilt the same market with a compliance-first mindset after regulatory failure.",
+  },
 ];
 
+/* -----------------------------
+   Path config (Tailwind-safe)
+------------------------------ */
 const pathConfig = {
   serial: {
     icon: TrendingUp,
     label: "Serial Founders",
-    color: "text-purple-600",
     bg: "bg-purple-50",
-    description: "Built another startup"
+    color: "text-purple-600",
+    border: "border-purple-300",
   },
   corporate: {
     icon: Building2,
     label: "Went Corporate",
-    color: "text-blue-600",
     bg: "bg-blue-50",
-    description: "Joined big tech"
+    color: "text-blue-600",
+    border: "border-blue-300",
   },
   vc: {
     icon: Briefcase,
     label: "Became VCs",
-    color: "text-green-600",
     bg: "bg-green-50",
-    description: "Now funding others"
+    color: "text-green-600",
+    border: "border-green-300",
   },
   advisor: {
     icon: Users,
     label: "Advisors & Angels",
-    color: "text-orange-600",
     bg: "bg-orange-50",
-    description: "Mentoring & investing"
+    color: "text-orange-600",
+    border: "border-orange-300",
   },
   ghost: {
     icon: Ghost,
     label: "Ghost Mode",
-    color: "text-gray-600",
     bg: "bg-gray-50",
-    description: "Vanished from tech"
-  }
+    color: "text-gray-600",
+    border: "border-gray-300",
+  },
 };
 
-export default function FounderAfterlife() {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedPath, setSelectedPath] = useState('all');
-  const [selectedCategory, setSelectedCategory] = useState('all');
+export default function Afterlife() {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedPath, setSelectedPath] = useState("all");
+  const [selectedCategory, setSelectedCategory] = useState("all");
 
   const filteredFounders = useMemo(() => {
-    return sampleFounders.filter(founder => {
-      const matchesSearch = founder.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                           founder.deadStartup.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesPath = selectedPath === 'all' || founder.currentPath === selectedPath;
-      const matchesCategory = selectedCategory === 'all' || founder.category === selectedCategory;
+    return sampleFounders.filter((f) => {
+      const matchesSearch =
+        f.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        f.deadStartup.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesPath = selectedPath === "all" || f.currentPath === selectedPath;
+      const matchesCategory =
+        selectedCategory === "all" || f.category === selectedCategory;
       return matchesSearch && matchesPath && matchesCategory;
     });
   }, [searchTerm, selectedPath, selectedCategory]);
 
   const stats = useMemo(() => {
-    const pathCounts = {};
-    Object.keys(pathConfig).forEach(key => pathCounts[key] = 0);
-    sampleFounders.forEach(f => pathCounts[f.currentPath]++);
-    
-    return {
-      total: sampleFounders.length,
-      avgRecovery: "9 months",
-      pathCounts
-    };
+    const counts = {};
+    Object.keys(pathConfig).forEach((k) => (counts[k] = 0));
+    sampleFounders.forEach((f) => counts[f.currentPath]++);
+    return { total: sampleFounders.length, avgRecovery: "9 months", counts };
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
-      {/* Header */}
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-10 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 py-6">
-          <div className="flex items-center gap-3 mb-2">
-            <Sparkles className="w-8 h-8 text-purple-600" />
-            <h1 className="text-3xl font-bold text-slate-900">The Founder Afterlife</h1>
-          </div>
-          <p className="text-slate-600 text-sm">
-            Where CEOs go after their startups die. Spoiler: Most of them land on their feet.
+    <section
+      id="afterlife"
+      className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 pt-24"
+    >
+      <div className="max-w-7xl mx-auto px-4 pb-20">
+        {/* Section intro */}
+        <div className="mb-14 text-center">
+          <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4">
+            What Happens After Failure?
+          </h2>
+          <p className="max-w-2xl mx-auto text-slate-600">
+            These startups died. Their founders didn’t. Here’s where they landed.
           </p>
         </div>
-      </header>
 
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        {/* Stats Overview */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-          <div className="bg-white rounded-lg p-6 shadow-sm border border-slate-200">
-            <div className="text-3xl font-bold text-slate-900">{stats.total}</div>
-            <div className="text-sm text-slate-600">Founders Tracked</div>
-          </div>
-          <div className="bg-white rounded-lg p-6 shadow-sm border border-slate-200">
-            <div className="text-3xl font-bold text-slate-900">{stats.avgRecovery}</div>
-            <div className="text-sm text-slate-600">Avg Time to Next Move</div>
-          </div>
-          <div className="bg-white rounded-lg p-6 shadow-sm border border-slate-200">
-            <div className="text-3xl font-bold text-slate-900">78%</div>
-            <div className="text-sm text-slate-600">Still in Tech</div>
-          </div>
+        {/* Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
+          <StatCard value={stats.total} label="Founders Tracked" />
+          <StatCard value={stats.avgRecovery} label="Avg Time to Next Move" />
+          <StatCard value="78%" label="Still in Tech" />
         </div>
 
-        {/* Path Distribution */}
-        <div className="bg-white rounded-lg p-6 shadow-sm border border-slate-200 mb-8">
-          <h2 className="text-xl font-bold text-slate-900 mb-4">The Resurrection Paths</h2>
+        {/* Paths */}
+        <div className="bg-white rounded-lg p-6 border border-slate-200 mb-10">
+          <h3 className="font-bold text-lg mb-4">Resurrection Paths</h3>
           <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-            {Object.entries(pathConfig).map(([key, config]) => {
-              const Icon = config.icon;
+            {Object.entries(pathConfig).map(([key, cfg]) => {
+              const Icon = cfg.icon;
               return (
                 <button
                   key={key}
-                  onClick={() => setSelectedPath(selectedPath === key ? 'all' : key)}
-                  className={`p-4 rounded-lg border-2 transition-all ${
-                    selectedPath === key 
-                      ? `${config.bg} border-${config.color.split('-')[1]}-300` 
-                      : 'bg-white border-slate-200 hover:border-slate-300'
+                  onClick={() =>
+                    setSelectedPath(selectedPath === key ? "all" : key)
+                  }
+                  className={`p-4 rounded-lg border-2 transition ${
+                    selectedPath === key
+                      ? `${cfg.bg} ${cfg.border}`
+                      : "bg-white border-slate-200 hover:border-slate-300"
                   }`}
                 >
-                  <Icon className={`w-6 h-6 mx-auto mb-2 ${selectedPath === key ? config.color : 'text-slate-600'}`} />
-                  <div className="text-sm font-semibold text-slate-900">{stats.pathCounts[key]}</div>
-                  <div className="text-xs text-slate-600">{config.label}</div>
+                  <Icon className={`w-6 h-6 mx-auto mb-2 ${cfg.color}`} />
+                  <div className="font-semibold">{stats.counts[key]}</div>
+                  <div className="text-xs text-slate-600">{cfg.label}</div>
                 </button>
               );
             })}
           </div>
         </div>
 
-        {/* Search and Filters */}
-        <div className="bg-white rounded-lg p-6 shadow-sm border border-slate-200 mb-6">
+        {/* Search */}
+        <div className="bg-white rounded-lg p-6 border border-slate-200 mb-10">
           <div className="flex flex-col md:flex-row gap-4">
-            <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400" />
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
               <input
-                type="text"
-                placeholder="Search by founder or startup name..."
+                className="w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500"
+                placeholder="Search founder or startup..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
               />
             </div>
             <select
+              className="px-4 py-2 border rounded-lg"
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
             >
               <option value="all">All Categories</option>
-              <option value="Fintech">Fintech</option>
-              <option value="Social">Social</option>
-              <option value="E-commerce">E-commerce</option>
-              <option value="Hardware">Hardware</option>
-              <option value="Crypto">Crypto</option>
-              <option value="On-Demand">On-Demand</option>
-              <option value="Health">Health</option>
+              <option>Fintech</option>
+              <option>Social</option>
+              <option>Crypto</option>
+              <option>Health</option>
+              <option>Hardware</option>
+              <option>On-Demand</option>
             </select>
           </div>
         </div>
 
-        {/* Founders Grid */}
+        {/* Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {filteredFounders.map(founder => {
-            const pathInfo = pathConfig[founder.currentPath];
-            const PathIcon = pathInfo.icon;
-            
+          {filteredFounders.map((f) => {
+            const cfg = pathConfig[f.currentPath];
+            const Icon = cfg.icon;
             return (
-              <div key={founder.id} className="bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden hover:shadow-md transition-shadow">
-                <div className="p-6">
-                  <div className="flex items-start justify-between mb-4">
-                    <div>
-                      <h3 className="text-xl font-bold text-slate-900">{founder.name}</h3>
-                      <div className="flex items-center gap-2 mt-1">
-                        <span className="text-sm text-slate-500">💀 {founder.deadStartup}</span>
-                        <span className="text-xs bg-slate-100 text-slate-600 px-2 py-1 rounded">
-                          {founder.category}
-                        </span>
-                      </div>
-                    </div>
-                    <div className={`p-2 rounded-lg ${pathInfo.bg}`}>
-                      <PathIcon className={`w-5 h-5 ${pathInfo.color}`} />
-                    </div>
+              <div
+                key={f.id}
+                className="bg-white border border-slate-200 rounded-lg p-6 hover:shadow-md transition"
+              >
+                <div className="flex justify-between mb-4">
+                  <div>
+                    <h4 className="font-bold text-lg">{f.name}</h4>
+                    <p className="text-sm text-slate-500">
+                      💀 {f.deadStartup} · {f.category}
+                    </p>
                   </div>
-
-                  <div className="space-y-2 mb-4 text-sm">
-                    <div className="flex justify-between">
-                      <span className="text-slate-600">Shut down:</span>
-                      <span className="font-medium text-slate-900">{founder.shutdownYear}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-slate-600">Raised:</span>
-                      <span className="font-medium text-slate-900">{founder.fundsRaised}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-slate-600">Recovery time:</span>
-                      <span className="font-medium text-slate-900">{founder.timeToRecover}</span>
-                    </div>
+                  <div className={`p-2 rounded ${cfg.bg}`}>
+                    <Icon className={`w-5 h-5 ${cfg.color}`} />
                   </div>
+                </div>
 
-                  <div className="border-t border-slate-200 pt-4">
-                    <div className="flex items-center gap-2 mb-2">
-                      <ArrowRight className="w-4 h-4 text-purple-600" />
-                      <span className="font-semibold text-slate-900">{founder.currentRole}</span>
-                    </div>
-                    <div className="text-sm text-slate-600 mb-3">
-                      at <span className="font-medium text-slate-900">{founder.currentCompany}</span>
-                      {founder.newFunding && (
-                        <span className="ml-2 text-xs bg-green-100 text-green-700 px-2 py-1 rounded">
-                          {founder.newFunding}
-                        </span>
-                      )}
-                    </div>
-                    <p className="text-sm text-slate-600 italic">{founder.story}</p>
+                <div className="text-sm space-y-1 mb-4">
+                  <Row label="Shutdown" value={f.shutdownYear} />
+                  <Row label="Raised" value={f.fundsRaised} />
+                  <Row label="Recovery" value={f.timeToRecover} />
+                </div>
+
+                <div className="border-t pt-4">
+                  <div className="flex items-center gap-2 mb-1">
+                    <ArrowRight className="w-4 h-4 text-purple-600" />
+                    <span className="font-semibold">{f.currentRole}</span>
                   </div>
-
-                  <div className="mt-4 pt-4 border-t border-slate-200">
-                    <span className={`text-xs font-medium ${
-                      founder.outcome.includes('Unicorn') ? 'text-purple-600' :
-                      founder.outcome.includes('Thriving') ? 'text-green-600' :
-                      founder.outcome.includes('Active') ? 'text-blue-600' :
-                      founder.outcome.includes('MIA') ? 'text-gray-600' :
-                      'text-slate-600'
-                    }`}>
-                      Status: {founder.outcome}
+                  <p className="text-sm text-slate-600">
+                    at <span className="font-medium">{f.currentCompany}</span>
+                  </p>
+                  {f.newFunding && (
+                    <span className="inline-block mt-2 text-xs bg-green-100 text-green-700 px-2 py-1 rounded">
+                      {f.newFunding}
                     </span>
-                  </div>
+                  )}
+                  <p className="mt-3 text-sm italic text-slate-600">
+                    {f.story}
+                  </p>
+                </div>
+
+                <div className="mt-4 text-xs font-medium text-slate-600">
+                  Status:{" "}
+                  <span className="font-semibold">{f.outcome}</span>
                 </div>
               </div>
             );
@@ -322,21 +306,46 @@ export default function FounderAfterlife() {
         </div>
 
         {filteredFounders.length === 0 && (
-          <div className="text-center py-12">
-            <Ghost className="w-16 h-16 text-slate-300 mx-auto mb-4" />
-            <p className="text-slate-600">No founders found matching your criteria.</p>
+          <div className="text-center py-20">
+            <Ghost className="w-16 h-16 mx-auto text-slate-300 mb-4" />
+            <p className="text-slate-600">No founders match your filters.</p>
           </div>
         )}
 
-        {/* Footer CTA */}
-        <div className="mt-12 bg-gradient-to-r from-purple-600 to-blue-600 rounded-lg p-8 text-white text-center">
-          <h3 className="text-2xl font-bold mb-2">Know Where a Dead Startup CEO Ended Up?</h3>
-          <p className="mb-6 text-purple-100">Help us track the founder afterlife. Submit their resurrection story.</p>
-          <button className="bg-white text-purple-600 px-6 py-3 rounded-lg font-semibold hover:bg-purple-50 transition-colors">
+        {/* CTA */}
+        <div className="mt-20 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg p-10 text-center">
+          <h3 className="text-2xl font-bold mb-2">
+            Know Where a Founder Ended Up?
+          </h3>
+          <p className="mb-6 text-purple-100">
+            Help us document the founder after-life.
+          </p>
+          <button className="bg-white text-purple-600 px-6 py-3 rounded font-semibold hover:bg-purple-50">
             Submit a Founder
           </button>
         </div>
       </div>
+    </section>
+  );
+}
+
+/* -----------------------------
+   Small helpers
+------------------------------ */
+function StatCard({ value, label }) {
+  return (
+    <div className="bg-white border border-slate-200 rounded-lg p-6">
+      <div className="text-3xl font-bold">{value}</div>
+      <div className="text-sm text-slate-600">{label}</div>
+    </div>
+  );
+}
+
+function Row({ label, value }) {
+  return (
+    <div className="flex justify-between">
+      <span className="text-slate-500">{label}:</span>
+      <span className="font-medium">{value}</span>
     </div>
   );
 }
