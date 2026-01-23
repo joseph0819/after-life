@@ -1,4 +1,5 @@
-import { ArrowDownRight } from "lucide-react";
+import React from 'react';
+import { ArrowDownRight } from 'lucide-react';
 
 /* -----------------------------
    Floating bubbles / dust
@@ -31,7 +32,7 @@ export default function Hero() {
   return (
     <section className="relative min-h-screen bg-white flex flex-col items-center justify-center text-center px-4 overflow-hidden">
       
-      {/* Grain */}
+      {/* Grain texture */}
       <div className="pointer-events-none absolute inset-0 opacity-[0.04] bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
 
       {/* Floating bubbles */}
@@ -39,7 +40,7 @@ export default function Hero() {
 
       {/* Badge */}
       <div className="mb-6 inline-flex items-center gap-2 bg-orange-500 text-black px-4 py-1 text-xs font-bold tracking-wide rotate-[-2deg] shadow">
-        💀 900+ DEAD STARTUPS
+        💀 1704+ DEAD STARTUPS
       </div>
 
       {/* Headline */}
@@ -54,22 +55,24 @@ export default function Hero() {
         Venture-backed startups died here.
       </p>
       <p className="max-w-xl text-lg md:text-xl text-slate-700 mb-8">
-        The founders didn’t.
+        The founders didn't.
       </p>
 
       {/* Quote */}
       <p className="text-sm text-slate-500 italic mb-10">
-        “Failure didn’t end the story. It just changed the chapter.”
+        "Failure didn't end the story. It just changed the chapter."
       </p>
 
       {/* CTA */}
       <div className="flex flex-col md:flex-row items-center gap-6">
-        <a
-          href="#afterlife"
-          className="bg-orange-500 text-black px-6 py-3 font-bold rotate-[-2deg] hover:rotate-0 transition shadow"
+        <button
+          onClick={() => {
+            alert('In a real app, this would scroll to the main content');
+          }}
+          className="bg-orange-500 text-black px-6 py-3 font-bold rotate-[-2deg] hover:rotate-0 transition shadow cursor-pointer"
         >
           LOOT THE AFTER-LIFE
-        </a>
+        </button>
 
         <div className="flex items-center gap-2 text-sm text-slate-500">
           <span>Scroll to explore</span>
